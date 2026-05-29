@@ -39,6 +39,8 @@ from groq import Groq
 # Environment variables
 from dotenv import load_dotenv
 
+print("LOADING MAIN.PY FROM:", __file__)
+
 # Run server
 import uvicorn
 
@@ -46,7 +48,7 @@ import uvicorn
 # ENVIRONMENT SETUP
 # ============================================================================
 
-load_dotenv()
+ load_dotenv()
 
 # ============================================================================
 # PYDANTIC MODELS (Request/Response Schemas)

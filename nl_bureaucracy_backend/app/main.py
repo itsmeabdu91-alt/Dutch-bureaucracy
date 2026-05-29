@@ -39,15 +39,14 @@ from groq import Groq
 # Environment variables
 from dotenv import load_dotenv
 
-print("LOADING MAIN.PY FROM:", __file__)
-
 # Run server
 import uvicorn
 
 # ============================================================================
 # ENVIRONMENT SETUP
 # ============================================================================
- load_dotenv()
+
+load_dotenv()
 
 # ============================================================================
 # PYDANTIC MODELS (Request/Response Schemas)
@@ -625,8 +624,9 @@ async def auto_fill_form(request: FormFillRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Form filling failed: {str(e)}")
-        
-      @app.post("/process_letter")
+
+
+@app.post("/process_letter")
 async def process_letter(
     file: Optional[UploadFile] = File(None),
     text: Optional[str] = None
@@ -662,8 +662,6 @@ async def process_letter(
         raise HTTPException(status_code=500, detail=f"Verwerking mislukt: {str(e)}")
 
 
-
-
 # ============================================================================
 # RUN THE APPLICATION
 # ============================================================================
@@ -695,7 +693,7 @@ if __name__ == "__main__":
     print("\n" + "="*60 + "\n")
     
     uvicorn.run(
-        "this_file:app",  # Replace "this_file" with actual filename if different
+        "main:app",
         host="0.0.0.0",
         port=8000,
         reload=True

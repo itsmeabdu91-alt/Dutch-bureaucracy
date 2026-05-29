@@ -624,6 +624,41 @@ async def auto_fill_form(request: FormFillRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Form filling failed: {str(e)}")
+        @app.post("/process_letter")
+async def process_letter(
+    file: Optional[UploadFile] = File(None),
+    text: Optional[str] = None
+):
+    """
+    Combineert OCR, analyse en formfill in één API-call.
+    - Als een afbeelding wordt geüpload, gebruikt OCR.
+    - Als tekst wordt meegegeven, gebruikt die direct.
+    """
+    try:
+        # 1️⃣ OCR (indien afbeelding)
+        if file:
+            extracted_text = await ocr_service.extract_text_from_image(file)
+        elif text:
+            extracted_text = text
+        else:
+            raise HTTPException(status_code=400, detail="Geen tekst of afbeelding ontvangen.")
+
+        # 2️⃣ Analyse
+        analysis = await llm_service.analyze_letter(extracted_text)
+
+        # 3️⃣ Formulier-velden
+        form_data = await llm_service.extract_form_fields(extracted_text)
+
+        # 4️⃣ Combineer alles
+        return {
+            "ocr_text": extracted_text,
+            "analysis": analysis,
+            "formfill": form_data
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Verwerking mislukt: {str(e)}")
+
 
 
 # ============================================================================

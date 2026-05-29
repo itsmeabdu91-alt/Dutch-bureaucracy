@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-python-dotenv
-httpx
-pytesseract
-pillow
-python-multipart
-groq
-pydantic

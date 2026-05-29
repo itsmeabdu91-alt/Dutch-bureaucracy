@@ -624,6 +624,7 @@ async def auto_fill_form(request: FormFillRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Form filling failed: {str(e)}")
+        
         @app.post("/process_letter")
 async def process_letter(
     file: Optional[UploadFile] = File(None),
